@@ -757,7 +757,6 @@
         <item>@string/zzreboot_bootloader</item>
     </array>
 
-
     <!-- CM CHANGES START HERE -->
 
     <!-- LUN file to be used by legacy USB manager.
@@ -785,7 +784,5 @@
 
     <!-- Configure ring lockscreen center secondary ring(s) offset -->
     <integer name="config_ringSecCenterOffsetDIP">30</integer>
-
-
 
 </resources>
