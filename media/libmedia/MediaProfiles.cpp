@@ -68,6 +68,10 @@ const MediaProfiles::NameToTagMap MediaProfiles::sCamcorderQualityNameMap[] = {
     {"720p", CAMCORDER_QUALITY_720P},
     {"1080p", CAMCORDER_QUALITY_1080P},
     {"qvga", CAMCORDER_QUALITY_QVGA},
+    {"fwvga", CAMCORDER_QUALITY_FWVGA},
+    {"wvga", CAMCORDER_QUALITY_WVGA},
+    {"vga", CAMCORDER_QUALITY_VGA},
+    {"wqvga", CAMCORDER_QUALITY_WQVGA},
 
     {"timelapselow",  CAMCORDER_QUALITY_TIME_LAPSE_LOW},
     {"timelapsehigh", CAMCORDER_QUALITY_TIME_LAPSE_HIGH},
@@ -641,22 +645,41 @@ MediaProfiles::getInstance()
 MediaProfiles::createDefaultH263VideoEncoderCap()
 {
     return new MediaProfiles::VideoEncoderCap(
+#ifdef QCOM_HARDWARE
+        VIDEO_ENCODER_H263, 192000, 6000000, 176, 800, 144, 480, 1, 30);
+#else
         VIDEO_ENCODER_H263, 192000, 420000, 176, 352, 144, 288, 1, 20);
+#endif
 }
 
 /*static*/ MediaProfiles::VideoEncoderCap*
 MediaProfiles::createDefaultM4vVideoEncoderCap()
 {
     return new MediaProfiles::VideoEncoderCap(
+#ifdef QCOM_HARDWARE
+        VIDEO_ENCODER_MPEG_4_SP, 192000, 20 * 1000 * 1000, 176, 1920, 144, 1088, 1, 30);
+#else
         VIDEO_ENCODER_MPEG_4_SP, 192000, 420000, 176, 352, 144, 288, 1, 20);
+#endif
 }
 
+#ifdef QCOM_HARDWARE
+/*static*/ MediaProfiles::VideoEncoderCap*
+MediaProfiles::createDefaultH264VideoEncoderCap()
+{
+    return new MediaProfiles::VideoEncoderCap(
+        VIDEO_ENCODER_H264, 192000, 20 * 1000 * 1000, 176, 1920, 144, 1088, 1, 30);
+}
+#endif
 
 /*static*/ void
 MediaProfiles::createDefaultVideoEncoders(MediaProfiles *profiles)
 {
     profiles->mVideoEncoders.add(createDefaultH263VideoEncoderCap());
     profiles->mVideoEncoders.add(createDefaultM4vVideoEncoderCap());
+#ifdef QCOM_HARDWARE
+    profiles->mVideoEncoders.add(createDefaultH264VideoEncoderCap());
+#endif
 }
 
 /*static*/ MediaProfiles::CamcorderProfile*
@@ -798,6 +821,9 @@ MediaProfiles::createDefaultCamcorderProfiles(MediaProfiles *profiles)
 MediaProfiles::createDefaultAudioEncoders(MediaProfiles *profiles)
 {
     profiles->mAudioEncoders.add(createDefaultAmrNBEncoderCap());
+#ifdef QCOM_HARDWARE
+    profiles->mAudioEncoders.add(createDefaultAacEncoderCap());
+#endif
 }
 
 /*static*/ void
@@ -831,6 +857,15 @@ MediaProfiles::createDefaultAmrNBEncoderCap()
     return new MediaProfiles::AudioEncoderCap(
         AUDIO_ENCODER_AMR_NB, 5525, 12200, 8000, 8000, 1, 1);
 }
+
+#ifdef QCOM_HARDWARE
+/*static*/ MediaProfiles::AudioEncoderCap*
+MediaProfiles::createDefaultAacEncoderCap()
+{
+    return new MediaProfiles::AudioEncoderCap(
+        AUDIO_ENCODER_AAC, 64000, 156000, 8000, 48000, 1, 2);
+}
+#endif
 
 /*static*/ void
 MediaProfiles::createDefaultImageEncodingQualityLevels(MediaProfiles *profiles)

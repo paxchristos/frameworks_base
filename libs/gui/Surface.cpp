@@ -38,6 +38,9 @@
 #include <surfaceflinger/ISurfaceComposer.h>
 #include <surfaceflinger/Surface.h>
 #include <surfaceflinger/SurfaceComposerClient.h>
+#ifdef QCOM_HARDWARE
+#include <qcom_ui.h>
+#endif
 
 namespace android {
 

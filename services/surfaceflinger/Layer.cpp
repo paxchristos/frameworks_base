@@ -39,6 +39,11 @@
 #include "SurfaceFlinger.h"
 #include "SurfaceTextureLayer.h"
 
+#ifdef QCOM_HARDWARE
+#include <qcom_ui.h>
+#define SHIFT_SRC_TRANSFORM 4
+#endif
+
 #define DEBUG_RESIZE    0
 
 
@@ -59,10 +64,16 @@ Layer::Layer(SurfaceFlinger* flinger,
         mOpaqueLayer(true),
         mNeedsDithering(false),
         mSecure(false),
+#ifdef QCOM_HARDWARE
+        mLayerQcomFlags(0),
+#endif
         mProtectedByApp(false)
 {
     mCurrentCrop.makeInvalid();
     glGenTextures(1, &mTextureName);
+#ifdef QCOM_HARDWARE
+    updateLayerQcomFlags(LAYER_UPDATE_STATUS, true, mLayerQcomFlags);
+#endif
 }
 
 void Layer::onFirstRef()
@@ -83,7 +94,11 @@ void Layer::onFirstRef()
     mSurfaceTexture = new SurfaceTextureLayer(mTextureName, this);
     mSurfaceTexture->setFrameAvailableListener(new FrameQueuedListener(this));
     mSurfaceTexture->setSynchronousMode(true);
+#ifdef QCOM_HARDWARE
+    mSurfaceTexture->setBufferCountServer(BUFFER_COUNT_SERVER);
+#else
     mSurfaceTexture->setBufferCountServer(2);
+#endif
 }
 
 Layer::~Layer()
@@ -168,10 +183,14 @@ status_t Layer::setBuffers( uint32_t w, uint32_t h,
     mSurfaceTexture->setDefaultBufferSize(w, h);
     mSurfaceTexture->setDefaultBufferFormat(format);
 
-    // we use the red index
-    int displayRedSize = displayInfo.getSize(PixelFormatInfo::INDEX_RED);
-    int layerRedsize = info.getSize(PixelFormatInfo::INDEX_RED);
-    mNeedsDithering = layerRedsize > displayRedSize;
+    if (mFlinger->getUseDithering()) {
+        // we use the red index
+        int displayRedSize = displayInfo.getSize(PixelFormatInfo::INDEX_RED);
+        int layerRedsize = info.getSize(PixelFormatInfo::INDEX_RED);
+        mNeedsDithering = layerRedsize > displayRedSize;
+    } else {
+        mNeedsDithering = false;
+    }
 
     return NO_ERROR;
 }
@@ -182,11 +201,24 @@ void Layer::setGeometry(hwc_layer_t* hwcl)
 
     hwcl->flags &= ~HWC_SKIP_LAYER;
 
+#ifdef QCOM_HARDWARE
+    const DisplayHardware& hw(graphicPlane(0).displayHardware());
+    // we can't do alpha-fade with the hwc HAL. C2D composition
+    // can handle fade cases
+    const State& s(drawingState());
+    if ((s.alpha < 0xFF) &&
+        !(DisplayHardware::C2D_COMPOSITION & hw.getFlags())) {
+        hwcl->flags = HWC_SKIP_LAYER;
+    }
+
+    hwcl->alpha = s.alpha;
+#else
     // we can't do alpha-fade with the hwc HAL
     const State& s(drawingState());
     if (s.alpha < 0xFF) {
-        hwcl->flags = HWC_SKIP_LAYER;
+	hwcl->flags = HWC_SKIP_LAYER;
     }
+#endif
 
     /*
      * Transformations are applied in this order:
@@ -208,6 +240,12 @@ void Layer::setGeometry(hwc_layer_t* hwcl)
         hwcl->flags = HWC_SKIP_LAYER;
     } else {
         hwcl->transform = finalTransform;
+#ifdef QCOM_HARDWARE
+        //mBufferTransform will have the srcTransform
+        //include src and final transform in the hwcl->transform
+        hwcl->transform = (( bufferOrientation.getOrientation() <<
+                                       SHIFT_SRC_TRANSFORM) | hwcl->transform);
+#endif
     }
 
     if (isCropped()) {
@@ -240,6 +278,10 @@ void Layer::setPerFrameData(hwc_layer_t* hwcl) {
     } else {
         hwcl->handle = buffer->handle;
     }
+#ifdef QCOM_HARDWARE
+    updateLayerQcomFlags(LAYER_ASYNCHRONOUS_STATUS, !mSurfaceTexture->isSynchronousMode(), mLayerQcomFlags);
+    hwcl->flags = getPerFrameFlags(hwcl->flags, mLayerQcomFlags);
+#endif
 }
 
 void Layer::onDraw(const Region& clip) const
@@ -272,6 +314,13 @@ void Layer::onDraw(const Region& clip) const
         return;
     }
 
+#ifdef QCOM_HARDWARE
+	if (!isGPUSupportedFormat(mActiveBuffer->format)) {
+	    clearWithOpenGL(clip, 0, 0, 0, 1);
+        return;
+	}
+#endif
+
     if (!isProtected()) {
         glBindTexture(GL_TEXTURE_EXTERNAL_OES, mTextureName);
         GLenum filter = GL_NEAREST;
@@ -299,6 +348,11 @@ void Layer::onDraw(const Region& clip) const
 
     glDisable(GL_TEXTURE_EXTERNAL_OES);
     glDisable(GL_TEXTURE_2D);
+#ifdef QCOM_HARDWARE
+    if(needsDithering()) {
+        glDisable(GL_DITHER);
+    }
+#endif
 }
 
 // As documented in libhardware header, formats in the range
@@ -339,6 +393,13 @@ bool Layer::isProtected() const
     return (activeBuffer != 0) &&
             (activeBuffer->getUsage() & GRALLOC_USAGE_PROTECTED);
 }
+
+#ifdef QCOM_HARDWARE
+void Layer::setIsUpdating(bool isUpdating)
+{
+    updateLayerQcomFlags(LAYER_UPDATE_STATUS, isUpdating, mLayerQcomFlags);
+}
+#endif
 
 uint32_t Layer::doTransaction(uint32_t flags)
 {
@@ -405,9 +466,18 @@ void Layer::lockPageFlip(bool& recomputeVisibleRegions)
             recomputeVisibleRegions = true;
             return;
         }
-
+#ifdef QCOM_HARDWARE
+        updateLayerQcomFlags(LAYER_UPDATE_STATUS, true, mLayerQcomFlags);
+#endif
         // update the active buffer
         mActiveBuffer = mSurfaceTexture->getCurrentBuffer();
+
+#ifdef QCOM_HARDWARE
+        //Buffer validity changed. Reset HWC geometry flags.
+        if(oldActiveBuffer == NULL && mActiveBuffer != NULL) {
+            mFlinger->invalidateHwcGeometry();
+        }
+#endif
 
         const Rect crop(mSurfaceTexture->getCurrentCrop());
         const uint32_t transform(mSurfaceTexture->getCurrentTransform());
@@ -493,6 +563,10 @@ void Layer::lockPageFlip(bool& recomputeVisibleRegions)
                     bufWidth, bufHeight, mCurrentTransform,
                     front.requested_w, front.requested_h);
         }
+#ifdef QCOM_HARDWARE
+    } else {
+        updateLayerQcomFlags(LAYER_UPDATE_STATUS, false, mLayerQcomFlags);
+#endif
     }
 }
 

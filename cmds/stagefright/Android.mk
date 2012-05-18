@@ -22,6 +22,10 @@ LOCAL_CFLAGS += -Wno-multichar
 
 LOCAL_MODULE_TAGS := debug
 
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+	LOCAL_C_INCLUDES += $(TOP)/vendor/qcom/opensource/omx/mm-core/omxcore/inc
+endif
+
 LOCAL_MODULE:= stagefright
 
 include $(BUILD_EXECUTABLE)
@@ -69,6 +73,10 @@ LOCAL_C_INCLUDES:= \
 LOCAL_CFLAGS += -Wno-multichar
 
 LOCAL_MODULE_TAGS := debug
+
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+	LOCAL_C_INCLUDES += $(TOP)/vendor/qcom/opensource/omx/mm-core/omxcore/inc
+endif
 
 LOCAL_MODULE:= recordvideo
 
@@ -119,6 +127,10 @@ LOCAL_CFLAGS += -Wno-multichar
 
 LOCAL_MODULE_TAGS := debug
 
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+	LOCAL_C_INCLUDES += $(TOP)/vendor/qcom/opensource/omx/mm-core/omxcore/inc
+endif
+
 LOCAL_MODULE:= stream
 
 include $(BUILD_EXECUTABLE)
@@ -142,6 +154,10 @@ LOCAL_C_INCLUDES:= \
 LOCAL_CFLAGS += -Wno-multichar
 
 LOCAL_MODULE_TAGS := debug
+
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+	LOCAL_C_INCLUDES += $(TOP)/vendor/qcom/opensource/omx/mm-core/omxcore/inc
+endif
 
 LOCAL_MODULE:= sf2
 

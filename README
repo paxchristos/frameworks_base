@@ -1,0 +1,99 @@
+What's Changed:
+Added: 
+Only in Android_Source/cm9/frameworks/base/cmds: hdmid \/
+Only in Android_Source/cm9/frameworks/base/core/jni: org_codeaurora_Performance.cpp \/
+Only in Android_Source/gummy/frameworks/base/include: androidfw \/
+Only in Android_Source/cm9/frameworks/base/include/binder: MemoryHeapIon.h \/
+Only in Android_Source/gummy/frameworks/base/include/gui: SurfaceComposerClient.h\/
+Only in Android_Source/gummy/frameworks/base/include/gui: Surface.h\/
+Only in Android_Source/cm9/frameworks/base/include/media/stagefright: ExtendedExtractorFuncs.h\/
+Only in Android_Source/cm9/frameworks/base/include/media/stagefright: ExtendedWriter.h\/
+Only in Android_Source/gummy/frameworks/base/libs: androidfw\/
+Only in Android_Source/cm9/frameworks/base/libs/binder: MemoryHeapIon.cpp\/
+Only in Android_Source/gummy/frameworks/base/media: libmedia_native\/
+Only in Android_Source/cm9/frameworks/base/media/libstagefright: ExtendedExtractor.cpp\/
+Only in Android_Source/cm9/frameworks/base/media/libstagefright: ExtendedWriter.cpp\/
+Only in Android_Source/cm9/frameworks/base/media/libstagefright/include: ColorFormat.h\/
+Only in Android_Source/cm9/frameworks/base/media/libstagefright/include: ExtendedExtractor.h\/
+
+Merged Files: 
+NO 3D SUPPORT & NO LGE HDMI SUPPORT!
+diff -r CM9/base/cmds/stagefright/Android.mk Gummy/base/cmds/stagefright/Android.mk \/
+diff -r CM9/base/cmds/stagefright/recordvideo.cpp Gummy/base/cmds/stagefright/recordvideo.cpp \/
+diff -r CM9/base/cmds/surfaceflinger/Android.mk Gummy/base/cmds/surfaceflinger/Android.mk\/
+diff -r CM9/base/cmds/system_server/library/Android.mk Gummy/base/cmds/system_server/library/Android.mk\/
+diff -r CM9/base/core/jni/android_hardware_Camera.cpp Gummy/base/core/jni/android_hardware_Camera.cpp\/
+diff -r CM9/base/core/jni/Android.mk Gummy/base/core/jni/Android.mk\/
+diff -r CM9/base/core/jni/android_os_Power.cpp Gummy/base/core/jni/android_os_Power.cpp\/
+diff -r CM9/base/core/jni/AndroidRuntime.cpp Gummy/base/core/jni/AndroidRuntime.cpp\/
+diff -r CM9/base/core/jni/android_view_GLES20Canvas.cpp Gummy/base/core/jni/android_view_GLES20Canvas.cpp\/
+diff -r CM9/base/core/jni/android_view_Surface.cpp Gummy/base/core/jni/android_view_Surface.cpp\/
+diff -r CM9/base/include/camera/Camera.h Gummy/base/include/camera/Camera.h\/
+diff -r CM9/base/include/camera/CameraParameters.h Gummy/base/include/camera/CameraParameters.h\/
+diff -r CM9/base/include/gui/ISurfaceTexture.h Gummy/base/include/gui/ISurfaceTexture.h\/
+diff -r CM9/base/include/gui/SurfaceTextureClient.h Gummy/base/include/gui/SurfaceTextureClient.h\/
+diff -r CM9/base/include/gui/SurfaceTexture.h Gummy/base/include/gui/SurfaceTexture.h\/
+diff -r CM9/base/include/media/MediaProfiles.h Gummy/base/include/media/MediaProfiles.h\/
+diff -r CM9/base/include/media/stagefright/ACodec.h Gummy/base/include/media/stagefright/ACodec.h\/
+diff -r CM9/base/include/media/stagefright/ColorConverter.h Gummy/base/include/media/stagefright/ColorConverter.h\/
+diff -r CM9/base/include/media/stagefright/DataSource.h Gummy/base/include/media/stagefright/DataSource.h\/
+diff -r CM9/base/include/media/stagefright/MediaDefs.h Gummy/base/include/media/stagefright/MediaDefs.h\/
+diff -r CM9/base/include/media/stagefright/MediaErrors.h Gummy/base/include/media/stagefright/MediaErrors.h\/
+diff -r CM9/base/include/media/stagefright/MetaData.h Gummy/base/include/media/stagefright/MetaData.h\/
+diff -r CM9/base/include/media/stagefright/OMXCodec.h Gummy/base/include/media/stagefright/OMXCodec.h\/
+diff -r CM9/base/include/media/stagefright/openmax/OMX_IVCommon.h Gummy/base/include/media/stagefright/openmax/OMX_IVCommon.h\/
+diff -r CM9/base/include/media/stagefright/SurfaceMediaSource.h Gummy/base/include/media/stagefright/SurfaceMediaSource.h\/
+diff -r CM9/base/include/media/stagefright/Utils.h Gummy/base/include/media/stagefright/Utils.h\/
+diff -r CM9/base/include/surfaceflinger/IGraphicBufferAlloc.h Gummy/base/include/surfaceflinger/IGraphicBufferAlloc.h\/
+diff -r CM9/base/include/ui/FramebufferNativeWindow.h Gummy/base/include/ui/FramebufferNativeWindow.h\/
+diff -r CM9/base/libs/binder/IMemory.cpp Gummy/base/libs/binder/IMemory.cpp\?/
+diff -r CM9/base/libs/camera/CameraParameters.cpp Gummy/base/libs/camera/CameraParameters.cpp\/
+diff -r CM9/base/libs/gui/Android.mk Gummy/base/libs/gui/Android.mk\/
+diff -r CM9/base/libs/gui/IGraphicBufferAlloc.cpp Gummy/base/libs/gui/IGraphicBufferAlloc.cpp\/
+diff -r CM9/base/libs/gui/ISurfaceComposer.cpp Gummy/base/libs/gui/ISurfaceComposer.cpp\/
+diff -r CM9/base/libs/gui/ISurfaceTexture.cpp Gummy/base/libs/gui/ISurfaceTexture.cpp\/
+diff -r CM9/base/libs/gui/SurfaceComposerClient.cpp Gummy/base/libs/gui/SurfaceComposerClient.cpp\/
+diff -r CM9/base/libs/gui/Surface.cpp Gummy/base/libs/gui/Surface.cpp\/
+diff -r CM9/base/libs/gui/SurfaceTextureClient.cpp Gummy/base/libs/gui/SurfaceTextureClient.cpp\/
+diff -r CM9/base/libs/gui/SurfaceTexture.cpp Gummy/base/libs/gui/SurfaceTexture.cpp\/
+diff -r CM9/base/libs/hwui/OpenGLRenderer.cpp Gummy/base/libs/hwui/OpenGLRenderer.cpp\/
+diff -r CM9/base/libs/hwui/OpenGLRenderer.h Gummy/base/libs/hwui/OpenGLRenderer.h\/
+diff -r CM9/base/libs/rs/driver/rsdGL.cpp Gummy/base/libs/rs/driver/rsdGL.cpp\/
+diff -r CM9/base/libs/rs/rsContext.cpp Gummy/base/libs/rs/rsContext.cpp\/
+diff -r CM9/base/libs/ui/FramebufferNativeWindow.cpp Gummy/base/libs/ui/FramebufferNativeWindow.cpp\/
+diff -r CM9/base/media/libmedia/MediaProfiles.cpp Gummy/base/media/libmedia/MediaProfiles.cpp\/
+diff -r CM9/base/media/libmediaplayerservice/StagefrightRecorder.cpp Gummy/base/media/libmediaplayerservice/StagefrightRecorder.cpp\/
+diff -r CM9/base/media/libmediaplayerservice/StagefrightRecorder.h Gummy/base/media/libmediaplayerservice/StagefrightRecorder.h\/
+diff -r CM9/base/media/libstagefright/ACodec.cpp Gummy/base/media/libstagefright/ACodec.cpp\/
+diff -r CM9/base/media/libstagefright/Android.mk Gummy/base/media/libstagefright/Android.mk\/
+diff -r CM9/base/media/libstagefright/CameraSource.cpp Gummy/base/media/libstagefright/CameraSource.cpp\/
+diff -r CM9/base/media/libstagefright/colorconversion/Android.mk Gummy/base/media/libstagefright/colorconversion/Android.mk\/
+diff -r CM9/base/media/libstagefright/colorconversion/ColorConverter.cpp Gummy/base/media/libstagefright/colorconversion/ColorConverter.cpp\/
+diff -r CM9/base/media/libstagefright/DataSource.cpp Gummy/base/media/libstagefright/DataSource.cpp\/
+diff -r CM9/base/media/libstagefright/httplive/LiveSession.cpp Gummy/base/media/libstagefright/httplive/LiveSession.cpp\/
+diff -r CM9/base/media/libstagefright/MediaDefs.cpp Gummy/base/media/libstagefright/MediaDefs.cpp\/
+diff -r CM9/base/media/libstagefright/MediaExtractor.cpp Gummy/base/media/libstagefright/MediaExtractor.cpp\/
+diff -r CM9/base/media/libstagefright/mpeg2ts/ATSParser.cpp Gummy/base/media/libstagefright/mpeg2ts/ATSParser.cpp\/
+diff -r CM9/base/media/libstagefright/MPEG4Extractor.cpp Gummy/base/media/libstagefright/MPEG4Extractor.cpp\/
+diff -r CM9/base/media/libstagefright/MPEG4Writer.cpp Gummy/base/media/libstagefright/MPEG4Writer.cpp\/
+diff -r CM9/base/media/libstagefright/omx/OMXNodeInstance.cpp Gummy/base/media/libstagefright/omx/OMXNodeInstance.cpp\/
+diff -r CM9/base/media/libstagefright/StagefrightMediaScanner.cpp Gummy/base/media/libstagefright/StagefrightMediaScanner.cpp\/
+diff -r CM9/base/media/libstagefright/StagefrightMetadataRetriever.cpp Gummy/base/media/libstagefright/StagefrightMetadataRetriever.cpp\/
+diff -r CM9/base/media/libstagefright/Utils.cpp Gummy/base/media/libstagefright/Utils.cpp\/
+diff -r CM9/base/opengl/include/GLES2/gl2ext.h Gummy/base/opengl/include/GLES2/gl2ext.h\/
+diff -r CM9/base/opengl/libagl/Android.mk Gummy/base/opengl/libagl/Android.mk\/
+diff -r CM9/base/opengl/libs/Android.mk Gummy/base/opengl/libs/Android.mk\/
+diff -r CM9/base/services/surfaceflinger/Android.mk Gummy/base/services/surfaceflinger/Android.mk\/
+diff -r CM9/base/services/surfaceflinger/DisplayHardware/DisplayHardware.cpp Gummy/base/services/surfaceflinger/DisplayHardware/DisplayHardware.cpp\/
+diff -r CM9/base/services/surfaceflinger/DisplayHardware/DisplayHardware.h Gummy/base/services/surfaceflinger/DisplayHardware/DisplayHardware.h\/
+diff -r CM9/base/services/surfaceflinger/DisplayHardware/HWComposer.cpp Gummy/base/services/surfaceflinger/DisplayHardware/HWComposer.cpp\/
+diff -r CM9/base/services/surfaceflinger/DisplayHardware/HWComposer.h Gummy/base/services/surfaceflinger/DisplayHardware/HWComposer.h\/
+diff -r CM9/base/services/surfaceflinger/LayerBase.cpp Gummy/base/services/surfaceflinger/LayerBase.cpp\/
+diff -r CM9/base/services/surfaceflinger/LayerBase.h Gummy/base/services/surfaceflinger/LayerBase.h\/
+diff -r CM9/base/services/surfaceflinger/Layer.cpp Gummy/base/services/surfaceflinger/Layer.cpp\/
+diff -r CM9/base/services/surfaceflinger/Layer.h Gummy/base/services/surfaceflinger/Layer.h\/
+diff -r CM9/base/services/surfaceflinger/LayerScreenshot.cpp Gummy/base/services/surfaceflinger/LayerScreenshot.cpp\/
+diff -r CM9/base/services/surfaceflinger/SurfaceFlinger.cpp Gummy/base/services/surfaceflinger/SurfaceFlinger.cpp\/
+diff -r CM9/base/services/surfaceflinger/SurfaceFlinger.h Gummy/base/services/surfaceflinger/SurfaceFlinger.h\/
+diff -r CM9/base/services/surfaceflinger/SurfaceTextureLayer.cpp Gummy/base/services/surfaceflinger/SurfaceTextureLayer.cpp\/
+diff -r CM9/base/services/surfaceflinger/SurfaceTextureLayer.h Gummy/base/services/surfaceflinger/SurfaceTextureLayer.h\/
