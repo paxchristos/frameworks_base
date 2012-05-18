@@ -806,11 +806,11 @@ status_t StagefrightRecorder::start() {
             status = startMPEG2TSRecording();
             break;
 
-#ifdef QCOM_HARDWARE
+/*#ifdef QCOM_HARDWARE
         case OUTPUT_FORMAT_QCP:
             status = startExtendedRecording( );
             break;
-#endif
+#endif removed */
         default:
             LOGE("Unsupported output file format: %d", mOutputFormat);
             status = UNKNOWN_ERROR;
@@ -861,14 +861,14 @@ sp<MediaSource> StagefrightRecorder::createAudioSource() {
         case AUDIO_ENCODER_AAC:
             mime = MEDIA_MIMETYPE_AUDIO_AAC;
             break;
-#ifdef QCOM_HARDWARE
+/*#ifdef QCOM_HARDWARE
         case AUDIO_ENCODER_EVRC:
             mime = MEDIA_MIMETYPE_AUDIO_EVRC;
             break;
         case AUDIO_ENCODER_QCELP:
             mime = MEDIA_MIMETYPE_AUDIO_QCELP;
             break;
-#endif
+#endif removed */
         default:
             LOGE("Unknown audio encoder: %d", mAudioEncoder);
             return NULL;
@@ -1455,13 +1455,13 @@ status_t StagefrightRecorder::setupVideoEncoder(
     CHECK(meta->findInt32(kKeyStride, &stride));
     CHECK(meta->findInt32(kKeySliceHeight, &sliceHeight));
     CHECK(meta->findInt32(kKeyColorFormat, &colorFormat));
-#ifdef QCOM_HARDWARE
+/*#ifdef QCOM_HARDWARE
     CHECK(meta->findInt32(kKeyHFR, &hfr));
 
     if(hfr) {
       mMaxFileDurationUs = mMaxFileDurationUs * (hfr/mFrameRate);
     }
-#endif
+#endif removed */
 
     enc_meta->setInt32(kKeyWidth, width);
     enc_meta->setInt32(kKeyHeight, height);
