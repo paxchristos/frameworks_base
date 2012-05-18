@@ -531,8 +531,8 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
     err = native_window_set_buffers_geometry(
             mNativeWindow.get(),
             def.format.video.nFrameWidth,
-            def.format.video.nFrameHeight/*,
-           eNativeColorFormat removed*/);
+            def.format.video.nFrameHeight,
+           eNativeColorFormat);
 #else
     err = native_window_set_buffers_geometry(
             mNativeWindow.get(),
