@@ -152,11 +152,11 @@ SurfaceTexture::SurfaceTexture(GLuint tex, bool allowSynchronousMode,
     mNextCrop.makeInvalid();
     memcpy(mCurrentTransformMatrix, mtxIdentity,
             sizeof(mCurrentTransformMatrix));
-#ifdef QCOM_HARDWARE
+/*#ifdef QCOM_HARDWARE
     mNextBufferInfo.width = 0;
     mNextBufferInfo.height = 0;
     mNextBufferInfo.format = 0;
-#endif
+#endif Removed */
 }
 
 SurfaceTexture::~SurfaceTexture() {
@@ -490,8 +490,8 @@ status_t SurfaceTexture::dequeueBuffer(int *outBuf, uint32_t w, uint32_t h,
 	requiredGeometry.set(w, h, format);
  
 	qBufGeometry updatedGeometry;
-	updatedGeometry.set(mNextBufferInfo.width, mNextBufferInfo.height,
-				mNextBufferInfo.format);
+	/*updatedGeometry.set(mNextBufferInfo.width, mNextBufferInfo.height,
+				mNextBufferInfo.format); Removed */
 #endif
 	if ((buffer == NULL) ||
 #ifdef QCOM_HARDWARE
@@ -659,8 +659,8 @@ status_t SurfaceTexture::queueBuffer(int buf, int64_t timestamp,
 #ifdef QCOM_HARDWARE
         // Update the buffer Geometry if required
         qBufGeometry updatedGeometry;
-        updatedGeometry.set(mNextBufferInfo.width,
-                            mNextBufferInfo.height, mNextBufferInfo.format);
+        /*updatedGeometry.set(mNextBufferInfo.width,
+                            mNextBufferInfo.height, mNextBufferInfo.format); Removed */
         updateBufferGeometry(mSlots[buf].mGraphicBuffer, updatedGeometry);
 #endif
         mDequeueCondition.signal();
@@ -783,9 +783,9 @@ status_t SurfaceTexture::disconnect(int api) {
 #ifdef QCOM_HARDWARE
                 memcpy(mCurrentTransformMatrix, mtxIdentity,
                        sizeof(mCurrentTransformMatrix));
-                mNextBufferInfo.width = 0;
+/*                mNextBufferInfo.width = 0;
                 mNextBufferInfo.height = 0;
-                mNextBufferInfo.format = 0;
+                mNextBufferInfo.format = 0; Removed */
 #endif
                 mDequeueCondition.signal();
             } else {
@@ -813,9 +813,9 @@ status_t SurfaceTexture::performQcomOperation(int operation, int arg1, int arg2,
             mGraphicBufferAlloc->setGraphicBufferSize(size);
         } break;
         case NATIVE_WINDOW_UPDATE_BUFFERS_GEOMETRY: {
-            mNextBufferInfo.width = arg1;
+/*            mNextBufferInfo.width = arg1;
             mNextBufferInfo.height = arg2;
-            mNextBufferInfo.format = arg3;
+            mNextBufferInfo.format = arg3; Removed */
         } break;
      };
      return OK;
