@@ -870,7 +870,7 @@ static JNINativeMethod gMethods[] = {
             (void*) android_view_GLES20Canvas_getClipBounds },
 
     { "nGetDisplayList",         "(II)I",      (void*) android_view_GLES20Canvas_getDisplayList },
-    /*{ "nDestroyDisplayList",     "(I)V",       (void*) android_view_GLES20Canvas_destroyDisplayList },
+    { "nDestroyDisplayList",     "(I)V",       (void*) android_view_GLES20Canvas_destroyDisplayList },
     { "nGetDisplayListSize",     "(I)I",       (void*) android_view_GLES20Canvas_getDisplayListSize },
     { "nCreateDisplayListRenderer", "()I",     (void*) android_view_GLES20Canvas_createDisplayListRenderer },
     { "nResetDisplayListRenderer", "(I)V",     (void*) android_view_GLES20Canvas_resetDisplayListRenderer },
@@ -893,7 +893,7 @@ static JNINativeMethod gMethods[] = {
     { "nCopyLayer",              "(II)Z",      (void*) android_view_GLES20Canvas_copyLayer },
 
     { "nGetMaximumTextureWidth",  "()I",       (void*) android_view_GLES20Canvas_getMaxTextureWidth },
-    { "nGetMaximumTextureHeight", "()I",       (void*) android_view_GLES20Canvas_getMaxTextureHeight },*/
+    { "nGetMaximumTextureHeight", "()I",       (void*) android_view_GLES20Canvas_getMaxTextureHeight },
 
 #endif
 };
