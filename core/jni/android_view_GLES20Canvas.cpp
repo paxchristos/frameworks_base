@@ -629,7 +629,7 @@ static void android_view_GLES20Canvas_resetDisplayListRenderer(JNIEnv* env,
 
 /*static void android_view_GLES20Canvas_destroyDisplayList(JNIEnv* env,
         jobject clazz, DisplayList* displayList) {
-    DisplayList::destroyDisplayListDeferred(displayList); removed */
+    DisplayList::destroyDisplayListDeferred(displayList); 
 }
 
 static bool android_view_GLES20Canvas_drawDisplayList(JNIEnv* env,
@@ -647,7 +647,7 @@ static bool android_view_GLES20Canvas_drawDisplayList(JNIEnv* env,
 static void android_view_GLES20Canvas_outputDisplayList(JNIEnv* env,
         jobject clazz, OpenGLRenderer* renderer, DisplayList* displayList) {
     renderer->outputDisplayList(displayList);
-}
+}removed */
 
 // ----------------------------------------------------------------------------
 // Layers
