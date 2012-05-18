@@ -1937,11 +1937,11 @@ MPEG4Source::MPEG4Source(
         mNALLengthSize = 1 + (ptr[4] & 3);
     }
 
-#ifdef QCOM_HARDWARE
+/*#ifdef QCOM_HARDWARE
     //MPEG4 extractor can give complete frames,
     //set arbitrary mode to false
     format->setInt32(kKeyUseArbitraryMode, 0);
-#endif
+#endif Removed */
 
     if (mStatistics) logExpectedFrames();
 }
@@ -2529,7 +2529,7 @@ void MPEG4Source::logTrackStatistics()
     LOGW("=====================================================");
     LOGW("Mime Type: %s",mime);
     LOGW("Total number of samples in track: %u",mSampleTable->countSamples());
-    LOGW("Number of key samples: %u",mSampleTable->getNumSyncSamples());
+//    LOGW("Number of key samples: %u",mSampleTable->getNumSyncSamples()); removed
     LOGW("Number of corrupt samples: %u",mNumSamplesReadError ?
            mNumSamplesReadError-1 : mNumSamplesReadError); //last sample reads error for EOS
     LOGW("=====================================================");
