@@ -1935,7 +1935,7 @@ status_t StagefrightRecorder::dump(
 
 #ifdef QCOM_HARDWARE
 status_t StagefrightRecorder::startExtendedRecording() {
-    CHECK(mOutputFormat == OUTPUT_FORMAT_QCP);
+//    CHECK(mOutputFormat == OUTPUT_FORMAT_QCP); removed 
 
     if (mSampleRate != 8000) {
         LOGE("Invalid sampling rate %d used for recording",
