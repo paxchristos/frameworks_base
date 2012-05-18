@@ -568,9 +568,9 @@ status_t CameraSource::initWithCameraAccess(
     mMeta->setInt32(kKeyStride,      mVideoSize.width);
     mMeta->setInt32(kKeySliceHeight, mVideoSize.height);
     mMeta->setInt32(kKeyFrameRate,   mVideoFrameRate);
-/*#ifdef QCOM_HARDWARE
+#ifdef QCOM_HARDWARE
     mMeta->setInt32(kKeyHFR, hfr);
-#endif Removed */
+#endif
     return OK;
 }
 
