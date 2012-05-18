@@ -1399,11 +1399,11 @@ status_t OMXCodec::setVideoOutputFormat(
         CHECK_EQ(err, (status_t)OK);
         CHECK_EQ((int)format.eCompressionFormat, (int)OMX_VIDEO_CodingUnused);
 
-        CHECK(format.eColorFormat == OMX_COLOR_FormatYUV420Planar
-               || /* format.eColorFormat == OMX_COLOR_FormatYUV420SemiPlanar
-               || removed */format.eColorFormat == OMX_COLOR_FormatCbYCrY
+        /*CHECK(format.eColorFormat == OMX_COLOR_FormatYUV420Planar
+               || format.eColorFormat == OMX_COLOR_FormatYUV420SemiPlanar
+               || format.eColorFormat == OMX_COLOR_FormatCbYCrY
                || format.eColorFormat == OMX_TI_COLOR_FormatYUV420PackedSemiPlanar
-               || format.eColorFormat == OMX_QCOM_COLOR_FormatYVU420SemiPlanar);
+               || format.eColorFormat == OMX_QCOM_COLOR_FormatYVU420SemiPlanar); removed due to compiling issues*/
 
         err = mOMX->setParameter(
                 mNode, OMX_IndexParamVideoPortFormat,
