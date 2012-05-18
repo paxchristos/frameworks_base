@@ -653,7 +653,7 @@ static void android_view_GLES20Canvas_outputDisplayList(JNIEnv* env,
 // Layers
 // ----------------------------------------------------------------------------
 
-/* static void android_view_GLES20Canvas_interrupt(JNIEnv* env, jobject clazz,
+static void android_view_GLES20Canvas_interrupt(JNIEnv* env, jobject clazz,
         OpenGLRenderer* renderer) {
     renderer->interrupt();
 }
@@ -669,7 +669,7 @@ static OpenGLRenderer* android_view_GLES20Canvas_createLayerRenderer(JNIEnv* env
         return new LayerRenderer(layer);
     }
     return NULL;
-}removed */
+}
 
 static Layer* android_view_GLES20Canvas_createTextureLayer(JNIEnv* env, jobject clazz,
         jboolean isOpaque, jintArray layerInfo) {
