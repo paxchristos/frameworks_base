@@ -543,7 +543,7 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
 #else
             def.format.video.eColorFormat);
 #endif
-#endif
+
 
 
     if (err != 0) {
