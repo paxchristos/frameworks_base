@@ -1469,9 +1469,9 @@ status_t StagefrightRecorder::setupVideoEncoder(
     enc_meta->setInt32(kKeyStride, stride);
     enc_meta->setInt32(kKeySliceHeight, sliceHeight);
     enc_meta->setInt32(kKeyColorFormat, colorFormat);
-/*#ifdef QCOM_HARDWARE
+#ifdef QCOM_HARDWARE
     enc_meta->setInt32(kKeyHFR, hfr);
-#endif removed */
+#endif
     if (mVideoTimeScale > 0) {
         enc_meta->setInt32(kKeyTimeScale, mVideoTimeScale);
     }
