@@ -138,6 +138,11 @@ const char CameraParameters::KEY_SUPPORTED_REDEYE_REDUCTION[] = "redeye-reductio
 const char CameraParameters::KEY_HIGH_DYNAMIC_RANGE_IMAGING[] = "hdr";
 const char CameraParameters::KEY_SUPPORTED_HDR_IMAGING_MODES[] = "hdr-values";
 #endif
+#ifdef SAMSUNG_CAMERA_HARDWARE
+const char CameraParameters::KEY_METERING[] = "metering";
+const char CameraParameters::KEY_WDR[] = "wdr";
+const char CameraParameters::KEY_ANTI_SHAKE_MODE[] = "anti-shake";
+#endif
 const char CameraParameters::KEY_VIDEO_SIZE[] = "video-size";
 const char CameraParameters::KEY_SUPPORTED_VIDEO_SIZES[] = "video-size-values";
 const char CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO[] = "preferred-preview-size-for-video";
@@ -451,7 +456,7 @@ void CameraParameters::set(const char *key, const char *value)
 void CameraParameters::set(const char *key, int value)
 {
     char str[16];
-    sprintf(str, "%d", value);
+    snprintf(str, sizeof(str), "%d", value);
     set(key, str);
 }
 
@@ -570,7 +575,7 @@ static void parseSizesList(const char *sizesStr, Vector<Size> &sizes)
 void CameraParameters::setPreviewSize(int width, int height)
 {
     char str[32];
-    sprintf(str, "%dx%d", width, height);
+    snprintf(str, sizeof(str), "%dx%d", width, height);
     set(KEY_PREVIEW_SIZE, str);
 }
 

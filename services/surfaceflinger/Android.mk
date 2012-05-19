@@ -1,6 +1,10 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
+ifeq ($(BOARD_HAVE_CODEC_SUPPORT),SAMSUNG_CODEC_SUPPORT)
+LOCAL_CFLAGS     += -DSAMSUNG_CODEC_SUPPORT
+endif
+
 LOCAL_SRC_FILES:= \
     Layer.cpp 								\
     LayerBase.cpp 							\
@@ -30,7 +34,6 @@ ifeq ($(TARGET_BOARD_PLATFORM), s5pc110)
 	LOCAL_CFLAGS += -DREFRESH_RATE=56
 endif
 
-
 LOCAL_SHARED_LIBRARIES := \
 	libcutils \
 	libhardware \
@@ -43,6 +46,12 @@ LOCAL_SHARED_LIBRARIES := \
 
 # this is only needed for DDMS debugging
 LOCAL_SHARED_LIBRARIES += libdvm libandroid_runtime
+
+ifeq ($(BOARD_USES_LGE_HDMI_ROTATION),true)
+LOCAL_CFLAGS += -DUSE_LGE_HDMI
+LOCAL_SHARED_LIBRARIES += \
+	libnvdispmgr_d
+endif
 
 LOCAL_C_INCLUDES := \
 	$(call include-path-for, corecg graphics)

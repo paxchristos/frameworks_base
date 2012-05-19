@@ -46,7 +46,6 @@
 
 #define DEBUG_RESIZE    0
 
-
 namespace android {
 
 // ---------------------------------------------------------------------------
@@ -309,7 +308,11 @@ void Layer::onDraw(const Region& clip) const
         // if not everything below us is covered, we plug the holes!
         Region holes(clip.subtract(under));
         if (!holes.isEmpty()) {
+#ifdef SAMSUNG_CODEC_SUPPORT
+            clearWithOpenGL(holes, 0, 0, 0, 0);
+#else
             clearWithOpenGL(holes, 0, 0, 0, 1);
+#endif
         }
         return;
     }
@@ -344,7 +347,19 @@ void Layer::onDraw(const Region& clip) const
         glEnable(GL_TEXTURE_2D);
     }
 
+#ifdef QCOM_HARDWARE
+    if(needsDithering()) {
+        glEnable(GL_DITHER);
+    }
+
+    int composeS3DFormat = mQCLayer->needsS3DCompose();
+    if (composeS3DFormat)
+        drawS3DUIWithOpenGL(clip);
+    else
+        drawWithOpenGL(clip);
+#else
     drawWithOpenGL(clip);
+#endif
 
     glDisable(GL_TEXTURE_EXTERNAL_OES);
     glDisable(GL_TEXTURE_2D);

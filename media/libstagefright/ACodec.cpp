@@ -51,6 +51,9 @@
 #define MIN_HEIGHT 320;
 #endif
 
+#ifdef SAMSUNG_CODEC_SUPPORT
+#include "include/ColorFormat.h"
+#endif
 
 namespace android {
 
@@ -455,6 +458,7 @@ status_t ACodec::allocateBuffersOnPort(OMX_U32 portIndex) {
             mNode, OMX_IndexParamPortDefinition, &def, sizeof(def));
 
     if (err != OK) {
+        LOGE("allocateBuffersOnInputPort Error in getParameter %d", err);
         return err;
     }
 
@@ -509,6 +513,8 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
 
     status_t err = mOMX->getParameter(
             mNode, OMX_IndexParamPortDefinition, &def, sizeof(def));
+    LOGV("allocateOutputBufs getParam buf cnt actual %d, min %d, buf size %d", 
+          def.nBufferCountActual, def.nBufferCountMin, def.nBufferSize);
 
     if (err != OK) {
         return err;
@@ -528,6 +534,9 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
         format = HAL_PIXEL_FORMAT_YCrCb_420_SP;
 #endif
 
+#ifdef SAMSUNG_CODEC_SUPPORT
+    OMX_COLOR_FORMATTYPE eNativeColorFormat = def.format.video.eColorFormat;
+    setNativeWindowColorFormat(eNativeColorFormat);
     err = native_window_set_buffers_geometry(
             mNativeWindow.get(),
             def.format.video.nFrameWidth,
@@ -691,6 +700,25 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
 
     return err;
 }
+
+#ifdef SAMSUNG_CODEC_SUPPORT
+void ACodec::setNativeWindowColorFormat(OMX_COLOR_FORMATTYPE &eNativeColorFormat)
+{
+    // In case of Samsung decoders, we set proper native color format for the Native Window
+    if (!strcasecmp(mComponentName.c_str(), "OMX.SEC.AVC.Decoder")
+        || !strcasecmp(mComponentName.c_str(), "OMX.SEC.FP.AVC.Decoder")) {
+        switch (eNativeColorFormat) {
+            case OMX_COLOR_FormatYUV420SemiPlanar:
+                eNativeColorFormat = (OMX_COLOR_FORMATTYPE)HAL_PIXEL_FORMAT_YCbCr_420_SP;
+                break;
+            case OMX_COLOR_FormatYUV420Planar:
+            default:
+                eNativeColorFormat = (OMX_COLOR_FORMATTYPE)HAL_PIXEL_FORMAT_YCbCr_420_P;
+                break;
+        }
+    }
+}
+#endif
 
 status_t ACodec::cancelBufferToNativeWindow(BufferInfo *info) {
     CHECK_EQ((int)info->mStatus, (int)BufferInfo::OWNED_BY_US);
@@ -1273,7 +1301,7 @@ bool ACodec::allYourBuffersAreBelongToUs(
 
         if (info->mStatus != BufferInfo::OWNED_BY_US
                 && info->mStatus != BufferInfo::OWNED_BY_NATIVE_WINDOW) {
-            LOGV("[%s] Buffer %p on port %ld still has status %d",
+            LOGE("[%s] Buffer %p on port %ld still has status %d",
                     mComponentName.c_str(),
                     info->mBufferID, portIndex, info->mStatus);
             return false;
@@ -2459,6 +2487,7 @@ bool ACodec::ExecutingState::onOMXEvent(
             CHECK_EQ(data1, (OMX_U32)kPortIndexOutput);
 
             if (data2 == 0 || data2 == OMX_IndexParamPortDefinition) {
+                LOGV("Flush output port before disable");
                 CHECK_EQ(mCodec->mOMX->sendCommand(
 #ifdef QCOM_HARDWARE
                         mCodec->mNode, OMX_CommandFlush, kPortIndexOutput),

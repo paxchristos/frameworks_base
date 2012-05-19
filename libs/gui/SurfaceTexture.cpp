@@ -142,6 +142,9 @@ SurfaceTexture::SurfaceTexture(GLuint tex, bool allowSynchronousMode,
     mUseFenceSync(false),
 #endif
     mTexTarget(texTarget),
+#ifdef QCOM_HARDWARE
+    mS3DFormat(0),
+#endif
     mFrameCounter(0) {
     // Choose a name using the PID and a process-unique ID.
     mName = String8::format("unnamed-%d-%d", getpid(), createProcessUniqueId());
@@ -662,7 +665,10 @@ status_t SurfaceTexture::queueBuffer(int buf, int64_t timestamp,
         updatedGeometry.set(mNextBufferInfo.width,
                             mNextBufferInfo.height, mNextBufferInfo.format);
         updateBufferGeometry(mSlots[buf].mGraphicBuffer, updatedGeometry);
+        updateBufferS3DFormat(mSlots[buf].mGraphicBuffer, mS3DFormat);
+        sp<GraphicBuffer> buffer = mSlots[buf].mGraphicBuffer;
 #endif
+
         mDequeueCondition.signal();
 
         *outWidth = mDefaultWidth;
@@ -817,6 +823,10 @@ status_t SurfaceTexture::performQcomOperation(int operation, int arg1, int arg2,
             mNextBufferInfo.height = arg2;
             mNextBufferInfo.format = arg3;
         } break;
+        case NATIVE_WINDOW_SET_S3D_FORMAT:
+            mS3DFormat = arg1;
+            break;
+        default: return BAD_VALUE;
      };
      return OK;
 }

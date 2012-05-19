@@ -242,6 +242,9 @@ protected:
                                GLclampf b, GLclampf alpha) const;
           void clearWithOpenGL(const Region& clip) const;
           void drawWithOpenGL(const Region& clip) const;
+#ifdef QCOM_HARDWARE
+          void drawS3DUIWithOpenGL(const Region& clip) const;
+#endif
 
           void setFiltering(bool filtering);
           bool getFiltering() const;

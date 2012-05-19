@@ -27,14 +27,6 @@ namespace android {
 // ---------------------------------------------------------------------------
 
 
-SurfaceTextureLayer::SurfaceTextureLayer(GLuint tex, const sp<Layer>& layer)
-    : SurfaceTexture(tex, true, GL_TEXTURE_EXTERNAL_OES, false), mLayer(layer) {
-}
-
-SurfaceTextureLayer::~SurfaceTextureLayer() {
-}
-
-
 status_t SurfaceTextureLayer::setDefaultBufferSize(uint32_t w, uint32_t h)
 {
     //LOGD("%s, w=%u, h=%u", __PRETTY_FUNCTION__, w, h);
