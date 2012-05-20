@@ -310,7 +310,6 @@ status_t ATSParser::Program::parseProgramMap(ABitReader *br) {
 
         // The only case we can recover from is if we have two streams
         // and they switched PIDs.
-
         bool success = false;
 #ifdef QCOM_HARDWARE
         bool bDiscontinuityOn = false;

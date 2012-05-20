@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2009 The Android Open Source Project
- *
+ * Copyright (c) 2010-2011, Code Aurora Forum. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*--------------------------------------------------------------------------
+Copyright (c) 2011, Code Aurora Forum. All rights reserved.
+--------------------------------------------------------------------------*/
 
 #ifndef OMX_CODEC_H_
 
@@ -169,6 +172,8 @@ private:
         size_t mSize;
         void *mData;
         MediaBuffer *mMediaBuffer;
+        OMX_U8 *mAllocatedBuffer;
+        size_t mAllocatedSize;
     };
 
     struct CodecSpecificData {

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2009 The Android Open Source Project
+ * Copyright (c) 2011 - 2012, Code Aurora Forum. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -633,7 +634,7 @@ sp<MediaSource> OMXCodec::Create(
             }
         }
 
-        LOGV("Attempting to allocate OMX node '%s'", componentName);
+        LOGE("Attempting to allocate OMX node '%s'", componentName);
 
         uint32_t quirks = getComponentQuirks(componentNameBase, createEncoder);
 #ifdef QCOM_HARDWARE
@@ -673,7 +674,7 @@ sp<MediaSource> OMXCodec::Create(
 
         status_t err = omx->allocateNode(componentName, observer, &node);
         if (err == OK) {
-            LOGV("Successfully allocated OMX node '%s'", componentName);
+            LOGE("Successfully allocated OMX node '%s'", componentName);
 
             sp<OMXCodec> codec = new OMXCodec(
                     omx, node, quirks, flags,
@@ -2206,6 +2207,8 @@ status_t OMXCodec::allocateBuffersOnPort(OMX_U32 portIndex) {
         BufferInfo info;
         info.mData = NULL;
         info.mSize = def.nBufferSize;
+        info.mAllocatedBuffer = NULL;
+        info.mAllocatedSize = 0;
 
         IOMX::buffer_id buffer;
         if (portIndex == kPortIndexInput
@@ -3517,6 +3520,12 @@ status_t OMXCodec::freeBuffer(OMX_U32 portIndex, size_t bufIndex) {
 
     BufferInfo *info = &buffers->editItemAt(bufIndex);
 
+    if (info->mAllocatedBuffer != NULL) {
+        OMX_BUFFERHEADERTYPE *header = (OMX_BUFFERHEADERTYPE *) info->mBuffer;
+        header->pBuffer = info->mAllocatedBuffer;
+        header->nAllocLen = info->mAllocatedSize;
+    }
+
     status_t err = mOMX->freeBuffer(mNode, portIndex, info->mBuffer);
 
     if (err == OK && info->mMediaBuffer != NULL) {
@@ -3896,8 +3905,14 @@ bool OMXCodec::drainInputBuffer(BufferInfo *info) {
             //for encoder
             CHECK(header->pBuffer == info->mData);
 
+            if (info->mAllocatedBuffer == NULL) {
+                info->mAllocatedBuffer = header->pBuffer;
+                info->mAllocatedSize = header->nAllocLen;
+            }
+
             header->pBuffer =
                 (OMX_U8 *)srcBuffer->data() + srcBuffer->range_offset();
+            header->nAllocLen = srcBuffer->size() - srcBuffer->range_offset();
 
             releaseBuffer = false;
             info->mMediaBuffer = srcBuffer;
@@ -4551,7 +4566,7 @@ void OMXCodec::setG711Format(int32_t numChannels) {
 
 void OMXCodec::setImageOutputFormat(
         OMX_COLOR_FORMATTYPE format, OMX_U32 width, OMX_U32 height) {
-    CODEC_LOGV("setImageOutputFormat(%ld, %ld)", width, height);
+    CODEC_LOGE("setImageOutputFormat(%ld, %ld)", width, height);
 
 #if 0
     OMX_INDEXTYPE index;

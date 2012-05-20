@@ -779,7 +779,21 @@ status_t AudioFlinger::setParameters(int ioHandle, const String8& keyValuePairs)
                 mBtNrecIsOff = btNrecIsOff;
             }
         }
+
+#ifdef MOTO_DOCK_HACK
+        String8 key = String8("DockState");
+        int device;
+        if (NO_ERROR != param.getInt(key, device)) {
+            LOGD("setParameters(): DockState not present");
+            return final_result;
+        } else {
+            /* We also need to pass routing=int */
+            ioHandle = 1;
+            LOGD("setParameters(): DockState %d trick done!", device);
+        }
+#else
         return final_result;
+#endif
     }
 
     // hold a strong ref on thread in case closeOutput() or closeInput() is called
@@ -794,8 +808,7 @@ status_t AudioFlinger::setParameters(int ioHandle, const String8& keyValuePairs)
             // indicate output device change to all input threads for pre processing
             AudioParameter param = AudioParameter(keyValuePairs);
             int value;
-            if ((param.getInt(String8(AudioParameter::keyRouting), value) == NO_ERROR) &&
-                    (value != 0)) {
+            if (param.getInt(String8(AudioParameter::keyRouting), value) == NO_ERROR) {
                 for (size_t i = 0; i < mRecordThreads.size(); i++) {
                     mRecordThreads.valueAt(i)->setParameters(keyValuePairs);
                 }

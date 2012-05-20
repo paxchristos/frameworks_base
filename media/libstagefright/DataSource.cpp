@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2009 The Android Open Source Project
+ * Copyright (C) 2010-2012 Code Aurora Forum
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +80,6 @@ bool DataSource::sniff(
     *mimeType = "";
     *confidence = 0.0f;
     meta->clear();
-
     Mutex::Autolock autoLock(gSnifferMutex);
     for (List<SnifferFunc>::iterator it = gSniffers.begin();
          it != gSniffers.end(); ++it) {

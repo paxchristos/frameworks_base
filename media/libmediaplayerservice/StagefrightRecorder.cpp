@@ -1,4 +1,5 @@
 /*
+ * Portions Copyright (C) 2012 VMware, Inc. All Rights Reserved.
  * Copyright (C) 2009 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1456,7 +1457,10 @@ status_t StagefrightRecorder::setupVideoEncoder(
     CHECK(meta->findInt32(kKeySliceHeight, &sliceHeight));
     CHECK(meta->findInt32(kKeyColorFormat, &colorFormat));
 #ifdef QCOM_HARDWARE
-    CHECK(meta->findInt32(kKeyHFR, &hfr));
+    hfr = 0;
+    if (!meta->findInt32(kKeyHFR, &hfr)) {
+        LOGW("hfr not found, default to 0");
+    }
 
     if(hfr) {
       mMaxFileDurationUs = mMaxFileDurationUs * (hfr/mFrameRate);
@@ -1555,6 +1559,7 @@ status_t StagefrightRecorder::setupVideoEncoder(
 
     uint32_t encoder_flags = 0;
     if (mIsMetaDataStoredInVideoBuffers) {
+        LOGW("Camera source supports metadata mode, create OMXCodec for metadata");
         encoder_flags |= OMXCodec::kHardwareCodecsOnly;
         encoder_flags |= OMXCodec::kStoreMetaDataInVideoBuffers;
 #ifdef QCOM_HARDWARE

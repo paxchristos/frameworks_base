@@ -700,6 +700,11 @@ void InputReader::requestRefreshConfiguration(uint32_t changes) {
     }
 }
 
+void InputReader::setKeyLayout(const char* deviceName, const char* keyLayout) {
+    AutoMutex _l(mLock);
+    mEventHub->setKeyLayout(deviceName, keyLayout);
+}
+
 void InputReader::dump(String8& dump) {
     AutoMutex _l(mLock);
 
@@ -2192,6 +2197,13 @@ void CursorInputMapper::process(const RawEvent* rawEvent) {
     if (rawEvent->type == EV_SYN && rawEvent->scanCode == SYN_REPORT) {
         sync(rawEvent->when);
     }
+#ifdef LEGACY_TRACKPAD
+    // sync now since BTN_MOUSE is not necessarily followed by SYN_REPORT and
+    // we need to ensure that we report the up/down promptly.
+    else if (rawEvent->type == EV_KEY && rawEvent->scanCode == BTN_MOUSE) {
+        sync(rawEvent->when);
+    }
+#endif
 }
 
 void CursorInputMapper::sync(nsecs_t when) {

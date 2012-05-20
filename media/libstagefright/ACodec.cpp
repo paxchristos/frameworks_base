@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*--------------------------------------------------------------------------
+Copyright (c) 2010-2011, Code Aurora Forum. All rights reserved.
+--------------------------------------------------------------------------*/
 
 //#define LOG_NDEBUG 0
 #define LOG_TAG "ACodec"
@@ -2501,7 +2504,6 @@ bool ACodec::ExecutingState::onOMXEvent(
                 mCodec->changeState(mCodec->mFlushingOutputState);
 #else
                 mCodec->freeOutputBuffersNotOwnedByComponent();
-
                 mCodec->changeState(mCodec->mOutputPortSettingsChangedState);
 #endif
             } else if (data2 == OMX_IndexConfigCommonOutputCrop) {

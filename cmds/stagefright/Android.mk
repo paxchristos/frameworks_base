@@ -15,8 +15,8 @@ LOCAL_C_INCLUDES:= \
 	frameworks/base/media/libstagefright \
 	frameworks/base/media/libstagefright/include \
 	$(TOP)/frameworks/base/include/media/stagefright/openmax \
-        external/skia/include/core \
-        external/skia/include/images \
+	external/skia/include/core \
+	external/skia/include/images \
 
 LOCAL_CFLAGS += -Wno-multichar
 
