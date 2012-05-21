@@ -79,12 +79,12 @@ LOCAL_SRC_FILES:=                         \
         XINGSeeker.cpp                    \
         avc_utils.cpp                     \
 
-#ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
-#        LOCAL_SRC_FILES += ExtendedWriter.cpp
-#        LOCAL_SRC_FILES += ExtendedExtractor.cpp
-#	LOCAL_C_INCLUDES += $(TOP)/hardware/qcom/display/libqcomui
-#endif
-# removed due to it being a not generating the correct libs when compiling.
+ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+        LOCAL_SRC_FILES += ExtendedWriter.cpp
+        LOCAL_SRC_FILES += ExtendedExtractor.cpp
+	LOCAL_C_INCLUDES += $(TOP)/hardware/qcom/display/libqcomui
+endif
+
 
 
 LOCAL_C_INCLUDES+= \

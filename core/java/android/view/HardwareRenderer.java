@@ -713,8 +713,6 @@ public abstract class HardwareRenderer {
                 // configuration (see RENDER_DIRTY_REGIONS)
                 mDirtyRegionsEnabled = GLES20Canvas.isBackBufferPreserved();
             }
-
-            return mEglContext.getGL();
         }
 
         abstract void initCaches();
