@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /*--------------------------------------------------------------------------
-Copyright (c) 2010-2011, Code Aurora Forum. All rights reserved.
+Copyright (c) 2010-2012, Code Aurora Forum. All rights reserved.
 --------------------------------------------------------------------------*/
 
 //#define LOG_NDEBUG 0
@@ -42,7 +42,7 @@ Copyright (c) 2010-2011, Code Aurora Forum. All rights reserved.
 #include <OMX_QCOMExtns.h>
 #include <gralloc_priv.h>
 #include <cutils/properties.h>
-#include <qcom_ui.h>
+#include "qcom_ui.h"
 
 //Smmoth streaming settings
 //Max resolution 1080p
@@ -548,11 +548,13 @@ status_t ACodec::allocateOutputBuffersFromNativeWindow() {
 #else
     err = native_window_set_buffers_geometry(
             mNativeWindow.get(),
+#ifdef QCOM_HARDWARE
             def.format.video.nFrameWidth,
             def.format.video.nFrameHeight,
-#ifdef QCOM_HARDWARE
             format);
 #else
+            def.format.video.nStride,
+            def.format.video.nSliceHeight,
             def.format.video.eColorFormat);
 #endif
 #endif
