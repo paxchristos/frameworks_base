@@ -184,7 +184,7 @@ public abstract class ContentResolver {
         mContext = context;
     }
 
-    /** @hide */
+     /** @hide */
     public final Context getContext() {
         return mContext;
     }
@@ -1035,8 +1035,7 @@ public abstract class ContentResolver {
     }
 
     /**
-     * Notify registered observers that a row was updated and attempt to sync changes
-     * to the network.
+     * Notify registered observers that a row was updated.
      * To register, call {@link #registerContentObserver(android.net.Uri , boolean, android.database.ContentObserver) registerContentObserver()}.
      * By default, CursorAdapter objects will get this notification.
      *

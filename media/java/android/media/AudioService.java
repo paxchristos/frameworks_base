@@ -51,6 +51,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.provider.Settings.System;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -205,6 +206,24 @@ public class AudioService extends IAudioService.Stub {
         AudioSystem.STREAM_SYSTEM,  // STREAM_SYSTEM_ENFORCED
         AudioSystem.STREAM_VOICE_CALL, // STREAM_DTMF
         AudioSystem.STREAM_MUSIC  // STREAM_TTS
+    };
+
+    private static final String[] STREAM_VOLUME_HEADSET_SETTINGS = new String[] {
+        "AudioService.SAVED_VOICE_CALL_HEADSET_VOL",
+        "AudioService.SAVED_SYSTEM_HEADSET_VOL",
+        "AudioService.SAVED_RING_HEADSET_VOL",
+        "AudioService.SAVED_MUSIC_HEADSET_VOL",
+        "AudioService.SAVED_ALARM_HEADSET_VOL",
+        "AudioService.SAVED_NOTIFICATION_HEADSET_VOL",
+    };
+
+    private static final String[] STREAM_VOLUME_SPEAKER_SETTINGS = new String[] {
+        "AudioService.SAVED_VOICE_CALL_SPEAKER_VOL",
+        "AudioService.SAVED_SYSTEM_SPEAKER_VOL",
+        "AudioService.SAVED_RING_SPEAKER_VOL",
+        "AudioService.SAVED_MUSIC_SPEAKER_VOL",
+        "AudioService.SAVED_ALARM_SPEAKER_VOL",
+        "AudioService.SAVED_NOTIFICATION_SPEAKER_VOL",
     };
 
     private AudioSystem.ErrorCallback mAudioSystemCallback = new AudioSystem.ErrorCallback() {

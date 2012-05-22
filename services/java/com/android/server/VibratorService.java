@@ -117,7 +117,7 @@ public class VibratorService extends IVibratorService.Stub {
     public boolean hasVibrator() {
         return vibratorExists();
     }
-    
+
     private boolean inQuietHours() {
         boolean quietHoursEnabled = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.QUIET_HOURS_ENABLED, 0) != 0;
@@ -140,7 +140,7 @@ public class VibratorService extends IVibratorService.Stub {
         }
         return false;
     }
-    
+
     public void vibrate(long milliseconds, IBinder token) {
         if (mContext.checkCallingOrSelfPermission(android.Manifest.permission.VIBRATE)
                 != PackageManager.PERMISSION_GRANTED) {

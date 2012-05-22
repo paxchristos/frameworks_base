@@ -115,5 +115,4 @@ public class WimaxManagerConstants
      */
     public static final String WIMAX_ENABLED_CHANGED_ACTION = "com.htc.net.wimax.WIMAX_ENABLED_CHANGED";
     public static final String CURRENT_WIMAX_ENABLED_STATE  = "curWimaxEnabledState";
-
 }

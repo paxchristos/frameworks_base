@@ -39,13 +39,13 @@ import android.view.ViewGroup;
  *
  * <p>See the <a href="{@docRoot}resources/tutorials/views/hello-spinner.html">Spinner
  * tutorial</a>.</p>
- *
+ * 
  * @attr ref android.R.styleable#Spinner_prompt
  */
 @Widget
 public class Spinner extends AbsSpinner implements OnClickListener {
     private static final String TAG = "Spinner";
-
+    
     // Only measure this many items to get a decent max width.
     private static final int MAX_ITEMS_MEASURED = 15;
 
@@ -53,7 +53,7 @@ public class Spinner extends AbsSpinner implements OnClickListener {
      * Use a dialog window for selecting spinner options.
      */
     public static final int MODE_DIALOG = 0;
-
+    
     /**
      * Use a dropdown anchored to the Spinner for selecting spinner options.
      */
@@ -756,13 +756,18 @@ public class Spinner extends AbsSpinner implements OnClickListener {
                 }
 
                 setContentWidth(Math.max(
-                       contentWidth, spinnerWidth - spinnerPaddingLeft - spinnerPaddingRight));
+                        measureContentWidth((SpinnerAdapter) mAdapter, getBackground()),
+                        spinnerWidth - spinnerPaddingLeft - spinnerPaddingRight));
             } else if (mDropDownWidth == MATCH_PARENT) {
                 final int spinnerWidth = Spinner.this.getWidth();
                 final int spinnerPaddingRight = Spinner.this.getPaddingRight();
                 setContentWidth(spinnerWidth - spinnerPaddingLeft - spinnerPaddingRight);
             } else {
                 setContentWidth(mDropDownWidth);
+            }
+            if (background != null) {
+                background.getPadding(mTempRect);
+                bgOffset = -mTempRect.left;
             }
             setHorizontalOffset(bgOffset + spinnerPaddingLeft);
             setInputMethodMode(ListPopupWindow.INPUT_METHOD_NOT_NEEDED);
