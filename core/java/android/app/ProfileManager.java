@@ -238,11 +238,18 @@ public class ProfileManager {
     }
 
     /** @hide */
+    //here's where my error is (SystemUI Crashing) I'm  trying to fix it with a check
     public ProfileGroup getActiveProfileGroup(String packageName) {
         NotificationGroup notificationGroup = getNotificationGroupForPackage(packageName);
         if(notificationGroup == null){
-            ProfileGroup defaultGroup = getActiveProfile().getDefaultGroup();
-            return defaultGroup;
+        	ProfileGroup defaultGroup = getActiveProfile().getDefaultGroup();
+		//my addition -- catching it to make sure it doesn't crash out -- Pax
+		if (defaultGroup != null) 
+		{
+            		return defaultGroup;
+		}
+
+
         }
         return getActiveProfile().getProfileGroup(notificationGroup.getUuid());
     }
